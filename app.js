@@ -4,7 +4,10 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3001;
+var path=require('path');
 
+app.set('views', path.join(process.cwd() + '/views'));
+app.use(express.static(path.join(process.cwd() + '/public')));
 
 app.use(express.static('public'));
 
@@ -15,7 +18,7 @@ app.set('view engine', 'jade');
 var canal = '';
 
 app.get('/', function(req, res){
-  res.render('https://michi-singravedad.herokuapp.com' + '/index'); // base_url fake para heroku
+  res.render( __dirname + '/index'); // base_url fake para heroku
 });
 
 app.get(`/tablero`, function(req, res){
@@ -27,7 +30,7 @@ app.get(`/tablero`, function(req, res){
   
   console.log(canal);
   
-  res.render('https://michi-singravedad.herokuapp.com' + '/tablero',{sala:canal});
+  res.render(__dirname + '/tablero',{sala:canal});
   // res.sendFile(__dirname + '/tablero',{sala:canal}); 
 });
 
