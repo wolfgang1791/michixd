@@ -1,4 +1,3 @@
-// 
 
 var express = require('express');
 var app = require('express')();
@@ -8,19 +7,40 @@ var io = require('socket.io')(http);
 
 app.use(express.static('public'));
 
+app.set('view engine', 'jade');
+
+// const myURL = new URL('https://michi-singravedad.herokuapp.com/');
+// console.log(myURL.hostname);
+var canal = '';
+
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  res.render('https://michi-singravedad.herokuapp.com' + '/index'); // base_url fake para heroku
 });
+
+app.get(`/tablero`, function(req, res){
+  
+  canal = req.query.sala;
+  console.log('sassenach');
+  
+  console.log(req);
+  
+  console.log(canal);
+  
+  res.render('https://michi-singravedad.herokuapp.com' + '/tablero',{sala:canal});
+  // res.sendFile(__dirname + '/tablero',{sala:canal}); 
+});
+
 
 io.on('connection', function(socket){
   
-  
-    socket.on('canal', function(msg){
+    console.log(canal);
+    
+    socket.on(canal, function(msg){
       console.log(msg);
-      io.emit('canal',msg);
+      io.emit(canal,msg);
       });
 });
 
 http.listen(3001, function(){
-  console.log('listening on *:3001 wea '+__dirname);
+  console.log('listening on *:3001 ');
 });

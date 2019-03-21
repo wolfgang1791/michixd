@@ -1,0 +1,197 @@
+doctype html
+html
+  head
+    link(rel='icon', type='image/png', href='/img/numeral.png')
+    title
+    link(rel='stylesheet', href='/css/tablero.css')
+  body
+    // <ul id="messages"></ul>
+    h1(id="sala") #{sala}
+    .contenedor
+      .fila
+        .c1
+        .c2
+        .c3
+      br
+      .fila
+        .c4
+        .c5
+        .c6
+      br
+      .fila
+        .c7
+        .c8
+        .c9
+    form(action='')
+      input#m(autocomplete='off')
+      button Enviar
+    
+    
+    script(src='/socket.io/socket.io.js')
+    script(src='https://code.jquery.com/jquery-1.11.1.js')
+    script.
+      //
+      $(function () {
+            var socket = io();
+
+            var canal = $("#sala").text();
+
+            var casillas = [1,1,1,1,1,1,1,1,1];
+            var final = [];
+
+            $('form').submit(function(){
+                socket.emit(canal, $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+      
+            socket.on(canal, function(msg){
+                var c = console.log;
+                var tokens = msg.match(/[xo]-([1-9]{1}$)/g);
+                //- var tokens = msg.split('-');
+                
+                c(tokens);
+
+                if(tokens != null)
+                 {   
+                    tokens = tokens[0].split('-');
+                    imagen = `/img/`;
+                        
+                        if(tokens[0] == 'x'){
+                                imagen = imagen+'equis.png';
+                        }
+                        else if(tokens[0] == 'o'){
+                            imagen = imagen+'circulo.png';
+                        }
+                        
+                        if(casillas[tokens[1]-1] != 0){
+                            var clase = `.c${tokens[1]}`;
+                            var figura = `<img src=${imagen} class="figura">`;
+                            casillas[tokens[1]-1] = 0;
+                        }
+                        else{
+                            alert('Casilla Ocupada')
+                        }
+                        $(clase).html(figura);
+                        $(clase).attr('val',tokens[0]);
+                        
+
+                        fin = false;
+                        for(let i=0; i<casillas.length; i++){
+                            
+                            if(casillas[i] == 0){
+                                final[i]=$(`.c${i+1}`).attr('val');
+                            }
+
+                        }
+
+                        fin =  comprobacion(casillas);    
+
+                        console.log(final);
+
+                        let jugador_ganador = ganador(final);
+        
+                        console.log(jugador_ganador);
+        
+                        if( jugador_ganador != 'T' ){
+                            alert(`Fin del juego:\n${jugador_ganador}ganan`);
+                        }
+                        else{
+                            if( fin )
+                                alert(`Empate`);
+                        }
+                        }
+                        else{
+                            alert('Comando no valido .l.')
+                        }
+            });
+      });
+
+      var principal = (tokens) =>{
+                
+                
+      }
+      var ganador = (final)=>{
+           
+           let juego1 = definido(final,0,1,2);//(final[0] == final[1] && final[1] == final[2] && final[0] == final[2]);
+           let juego2 = definido(final,3,4,5);//(final[3] == final[4] && final[4] == final[5] && final[3] == final[5]);
+           let juego3 = definido(final,6,7,8);//(final[6] == final[7] && final[7] == final[8] && final[6] == final[8]);
+           let juego4 = definido(final,0,3,6);//(final[0] == final[3] && final[3] == final[6] && final[0] == final[6]);
+           let juego5 = definido(final,1,4,7);//(final[1] == final[4] && final[4] == final[7] && final[1] == final[7]);
+           let juego6 = definido(final,2,5,8);//(final[2] == final[5] && final[5] == final[8] && final[2] == final[8]);
+           let juego7 = definido(final,0,4,8);//(final[0] == final[4] && final[4] == final[8] && final[0] == final[8]);
+           let juego8 = definido(final,2,4,6);//(final[2] == final[4] && final[4] == final[6] && final[2] == final[6]);
+        
+           var jugador_ganador = '';
+           console.log(juego1);
+           console.log(juego2);
+
+           console.log(juego3);
+
+           console.log(juego4);
+
+           console.log(juego5);
+
+           console.log(juego6);
+
+           console.log(juego7);
+
+           console.log(juego8);
+
+           
+
+           
+           if(juego1.estado && juego1.juego){
+               jugador_ganador = juego1.jugador;
+           }
+           else if(juego2.estado && juego2.juego){
+               jugador_ganador = juego2.jugador;
+           }
+           else if(juego3.estado && juego3.juego){
+               jugador_ganador = juego3.jugador;
+           }
+           else if(juego4.estado && juego4.juego){
+               jugador_ganador = juego4.jugador;;
+           }
+           else if(juego5.estado && juego5.juego){
+               jugador_ganador = juego5.jugador;
+           }
+           else if(juego6.estado && juego6.juego){
+               jugador_ganador = juego6.jugador;
+           }
+           else if(juego7.estado && juego7.juego){
+               jugador_ganador = juego7.jugador;
+           }
+           else if(juego8.estado && juego8.juego){
+               jugador_ganador = juego8.jugador;;
+           }
+           else{
+               jugador_ganador = 'T';
+           }
+
+           return jugador_ganador;
+      }
+
+      var definido = (final,x,y,z)=>{
+          return { 
+                    'estado':
+                        (final[x] !== undefined) && (final[y] !== undefined) && (final[z]!== undefined),
+                    'juego':    
+                        (final[x] == final[y] && final[y] == final[z] && final[x] == final[z]),
+                    'jugador': final[x],
+                 };
+      }
+
+      var comprobacion = (casillas) =>{
+               
+               var comprobacion = true;
+
+               for(i=0;i<casillas.length;i++){
+                   if(casillas[i] !== 0){
+                       comprobacion = false;
+                   }
+               }
+
+               return comprobacion;
+      }
+

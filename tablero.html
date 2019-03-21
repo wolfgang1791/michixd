@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="icon" type="image/png" href="/img/numeral.png">
+    <title></title>
+    <link rel="stylesheet" href="/css/tablero.css">
+  </head>
+  <body>
+    <!-- <ul id="messages"></ul> -->
+    <div class="contenedor">
+        <div class="fila">
+            <div class="c1"></div>
+            <div class="c2"></div>
+            <div class="c3"></div>
+          </div>
+          <br>
+          <div class="fila">
+            <div class="c4"></div>
+            <div class="c5"></div>
+            <div class="c6"></div>
+          </div>
+          <br>
+          <div class="fila">
+            <div class="c7"></div>
+            <div class="c8"></div>
+            <div class="c9"></div>
+          </div>
+    </div>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Enviar</button>
+    </form>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      console.log(sala);
+      
+      $(function () {
+        var socket = io();
+         
+        
+          $('form').submit(function(){ 
+          
+            socket.emit('canal', $('#m').val());
+            $('#m').val('');
+            return false;
+          });
+
+        socket.on('canal', function(msg){
+
+          var tokens = msg.split('-');
+          imagen = `/img/`;
+
+          if(tokens[0] == 'x'){
+            imagen = imagen+'equis.png';
+          }
+          else if(tokens[0] == 'o'){
+            imagen = imagen+'circulo.png';
+          }
+          
+          var clase = `.c${tokens[1]}`;
+
+          var figura = `<img src=${imagen} class="figura">`
+
+          // $(clase).css('background',`url(${imagen})`);
+          $(clase).html(figura);
+
+          // window.scrollTo(0, document.body.scrollHeight);
+        });
+        
+        
+      });
+    </script>
+  </body>
+</html>
+
+<!-- <input type="submit" value="send"> -->
