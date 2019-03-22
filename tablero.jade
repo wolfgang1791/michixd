@@ -46,7 +46,8 @@ block cuerpo
             final = [];
 
             if(contador == 1)
-             {
+             {  
+                 c(id());
                 turno = jugadores[id()];
                 contador++;
              }
@@ -277,5 +278,5 @@ block cuerpo
       }
     
       var id = () =>{
-        return Math.round(Math.random()*2);
+        return Math.round(Math.random()*1);
       }
