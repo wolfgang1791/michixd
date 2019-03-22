@@ -1,0 +1,41 @@
+extends ./header.jade 
+
+block cuerpo
+    div#contenedor
+        h2 Elige tu arma :v
+        br
+        form(action="/tablero" method='get')
+            input#ar(name='arma' hidden value="")
+            div.figx
+                img(src="/img/equis.png" width="50px" heigth="50px")
+            div.figo
+                img(src="/img/circulo.png" width="50px" heigth="50px")        
+            br
+            div.sub
+                input(type='submit', value='Empezar')
+
+    script(src='https://code.jquery.com/jquery-1.11.1.js')
+    script.
+      
+      $(function () { 
+          var equis = $('.figx');
+          var circulo = $('.figo');
+          equis.click(()=>{
+              $(equis).css({'border':'2px solid black'});
+           
+              if($(circulo).css('border').length > 0)
+                 $(circulo).css({'border':'none'})
+              
+              $('#ar').attr('value','');
+              $('#ar').attr('value','x');
+          });
+
+          circulo.click(()=>{
+              $(circulo).css({'border':'2px solid black'});
+              if($(equis).css('border').length > 0)
+                 $(equis).css({'border':'none'});
+              
+              $('#ar').attr('value','');
+              $('#ar').attr('value','o');
+          })
+      });

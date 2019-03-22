@@ -6,7 +6,7 @@ html
     <link rel="stylesheet" href="/css/index.css">
   body
     div#contenedor
-      form(action='/tablero', method='get')
+      form(action='/armas', method='get')
         label(for="usuario") Usuario:
         br
         input(name='usuario', placeholder='Ingresa tu nombre de usuario')
@@ -16,15 +16,33 @@ html
         input(name='sala', placeholder='Ingresa tu sala')
         br
         br
-        label Elige tu arma :v
-        br
-        br
-        div.fig
-          img(src="/img/circulo.png" width="50px" heigth="50px")
-        div.fig
-          img(src="/img/equis.png" width="50px" heigth="50px")        
-        br
         div.sub
           input(type='submit', value='Empezar')
-    // <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    // <input type="submit" value="send">
+
+    //- script(src='https://code.jquery.com/jquery-1.11.1.js')
+    //- script.
+      
+    //-   $(function () { 
+    //-       var equis = $('.figx');
+    //-       var circulo = $('.figo');
+    //-       equis.click(()=>{
+    //-           $(equis).css({'border':'2px solid black'});
+           
+    //-           if($(circulo).css('border').length > 0)
+    //-              $(circulo).css({'border':'none'})
+              
+    //-           $('#ar').attr('value','');
+    //-           $('#ar').attr('value','x');
+    //-       });
+
+    //-       circulo.click(()=>{
+    //-           $(circulo).css({'border':'2px solid black'});
+    //-           if($(equis).css('border').length > 0)
+    //-              $(equis).css({'border':'none'});
+              
+    //-           $('#ar').attr('value','');
+    //-           $('#ar').attr('value','o');
+    //-       })
+    //-   });
+    
+//- css('background').length != 0

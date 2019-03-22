@@ -1,13 +1,11 @@
-doctype html
-html
-  head
-    link(rel='icon', type='image/png', href='/img/numeral.png')
-    title
+extends ./header.jade
+
+block cuerpo
     link(rel='stylesheet', href='/css/tablero.css')
-  body
-    // <ul id="messages"></ul>
     h1 #{sala}
     input#user(hidden value="#{usuario}")
+    input#j1(hidden value="#{jugador1}")
+    input#j2(hidden value="#{jugador2}")
     input#sala(hidden value="#{sala}")
     .contenedor
       .fila
@@ -32,26 +30,87 @@ html
     script(src='/socket.io/socket.io.js')
     script(src='https://code.jquery.com/jquery-1.11.1.js')
     script.
-      //
+      
       $(function () {
-            var c = console.log;
+            c = console.log;
+
             var socket = io();
-
+            usuario = $('#user').val();
             var canal = $("#sala").val();
-            c(canal);
-            var casillas = [1,1,1,1,1,1,1,1,1];
-            var final = [];
-            var usuario = $('#user').val();
+            var jugadores = [$('#j1').val(),$('#j2').val()];
 
+            c(canal);
+            c(jugadores);
+            contador = 1;
+            casillas = [1,1,1,1,1,1,1,1,1];
+            final = [];
+
+            if(contador == 1)
+             {
+                turno = jugadores[id()];
+                contador++;
+             }
+            else{
+
+                if(turno == jugadores[0])
+                    turno = jugadores[1];
+                else if(turno == jugadores[1]){
+                    turno = jugadores[0];
+                }    
+                //- turno = turno_();
+            }
+            
             c(usuario);
 
             $('form').submit(function(){
-                socket.emit(canal, usuario,$('#m').val());
-                $('#m').val('');
-                return false;
+                if(turno == usuario){
+
+                    socket.emit(canal, usuario,$('#m').val());
+                    $('#m').val('');
+                    return false;
+                }
+
             });
       
-            socket.on(canal, function(msg){
+            socket.on(canal, function(msg,jugadores,user){
+                c('usuario: '+usuario+" turno: "+turno);
+
+                //- if(user == usuario){
+                    principal(msg);
+                //- }
+                //- else{
+                    //- alert('No es el turno');
+                //- }
+                //- if(contador == 1){
+                //-     principal(msg);
+
+                //-     turno = turno_(jugadores,user);
+
+                //-     c('turno: '+turno);
+                //-     c('jugadores: '+jugadores[0]+" "+jugadores[1])
+                //-     contador++;
+                //-     c('contador '+contador);
+                //- }
+                //- else{
+                    
+                //-     c('usuario: '+usuario+" turno: "+turno);
+                //-     if( usuario == turno){
+                        
+                //-         principal(msg);
+                //-         turno = turno_(jugadores,user);
+                        
+                //-         c('turno: '+turno);
+
+                //-     }
+                //-     else{
+                //-         alert('No es el turno');
+                //-     }
+                //- }
+                
+            });
+      });
+
+      var principal = (msg) =>{
                 
                 var tokens = msg.match(/[xo]-([1-9]{1}$)/g);
                 
@@ -110,13 +169,29 @@ html
                         else{
                             alert('Comando no valido .l.')
                         }
-            });
-      });
-
-      var principal = (tokens) =>{
-                
                 
       }
+      var turno_ = (user) => {
+        var temp = '';
+        var index = -1;
+        for (let i = 0; i < jugadores.length; i++) {
+                
+                if(user == jugadores[i].user){c('loca '+ (user == jugadores[i].user))
+                    index = i;
+                }
+            c("i "+i);
+            }  
+            
+            if( index == 0){
+                temp = jugadores[1].user;
+            }
+            else if( index == 1){
+                temp = jugadores[0].user;
+            }
+                    
+            return temp;
+      }
+
       var ganador = (final)=>{
            
            let juego1 = definido(final,0,1,2);//(final[0] == final[1] && final[1] == final[2] && final[0] == final[2]);
@@ -200,4 +275,7 @@ html
 
                return comprobacion;
       }
-
+    
+      var id = () =>{
+        return Math.round(Math.random()*2);
+      }
