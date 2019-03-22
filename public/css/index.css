@@ -1,0 +1,18 @@
+.fig{
+    float:left;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+#contenedor{
+    display:inline-block;
+    /* padding-bottom: 20px; */
+    height: 237px;
+}
+
+.sub{
+    clear:left;
+    text-align: center;
+    /* margin-top:20px; */
+} 

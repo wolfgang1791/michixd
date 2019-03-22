@@ -6,7 +6,9 @@ html
     link(rel='stylesheet', href='/css/tablero.css')
   body
     // <ul id="messages"></ul>
-    h1(id="sala") #{sala}
+    h1 #{sala}
+    input#user(hidden value="#{usuario}")
+    input#sala(hidden value="#{sala}")
     .contenedor
       .fila
         .c1
@@ -32,23 +34,27 @@ html
     script.
       //
       $(function () {
+            var c = console.log;
             var socket = io();
 
-            var canal = $("#sala").text();
-
+            var canal = $("#sala").val();
+            c(canal);
             var casillas = [1,1,1,1,1,1,1,1,1];
             var final = [];
+            var usuario = $('#user').val();
+
+            c(usuario);
 
             $('form').submit(function(){
-                socket.emit(canal, $('#m').val());
+                socket.emit(canal, usuario,$('#m').val());
                 $('#m').val('');
                 return false;
             });
       
             socket.on(canal, function(msg){
-                var c = console.log;
+                
                 var tokens = msg.match(/[xo]-([1-9]{1}$)/g);
-                //- var tokens = msg.split('-');
+                
                 
                 c(tokens);
 

@@ -24,9 +24,12 @@ app.get('/', function(req, res){
 app.get(`/tablero`, function(req, res){
   
   canal = req.query.sala;
-  console.log('sassenach');
-  
+  usuario = req.query.usuario;
+ 
   console.log(req);
+  
+
+  console.log(usuario);
   
   console.log(canal);
   
@@ -39,8 +42,8 @@ io.on('connection', function(socket){
   
     console.log(canal);
     
-    socket.on(canal, function(msg){
-      console.log(msg);
+    socket.on(canal, function(usuario,msg){
+      console.log(msg+" "+usuario);
       io.emit(canal,msg);
       });
 });

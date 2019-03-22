@@ -3,10 +3,28 @@ html
   head
     link(rel='icon', type='image/png', href='/img/numeral.png')
     title
-    // <link rel="stylesheet" href="/css/tablero.css">
+    <link rel="stylesheet" href="/css/index.css">
   body
-    form(action='/tablero', method='get')
-      input(name='sala', placeholder='Ingresa tu sala')
-      input(type='submit', value='Empezar')
+    div#contenedor
+      form(action='/tablero', method='get')
+        label(for="usuario") Usuario:
+        br
+        input(name='usuario', placeholder='Ingresa tu nombre de usuario')
+        br
+        label(for="usuario") Sala:
+        br
+        input(name='sala', placeholder='Ingresa tu sala')
+        br
+        br
+        label Elige tu arma :v
+        br
+        br
+        div.fig
+          img(src="/img/circulo.png" width="50px" heigth="50px")
+        div.fig
+          img(src="/img/equis.png" width="50px" heigth="50px")        
+        br
+        div.sub
+          input(type='submit', value='Empezar')
     // <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     // <input type="submit" value="send">
